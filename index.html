@@ -50,6 +50,13 @@
             align-self: flex-start;
         }
 
+        /* Estilo para o nome do usuário */
+        .message .username {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
         /* Área de input e botão de envio */
         .chat-input {
             display: flex;
@@ -127,7 +134,19 @@
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message");
                 messageElement.classList.add(message.sender_id === userName ? "sent" : "received");
-                messageElement.innerText = message.message;
+
+                // Cria um elemento para o nome do remetente
+                const userNameElement = document.createElement("div");
+                userNameElement.classList.add("username");
+                userNameElement.innerText = message.sender_id;
+
+                // Cria o conteúdo da mensagem
+                const messageTextElement = document.createElement("div");
+                messageTextElement.innerText = message.message;
+
+                // Adiciona o nome e a mensagem ao elemento de mensagem
+                messageElement.appendChild(userNameElement);
+                messageElement.appendChild(messageTextElement);
 
                 // Adiciona a mensagem à caixa de chat
                 chatBox.appendChild(messageElement);
