@@ -1,0 +1,75 @@
+{
+  "users": [
+    {
+      "user_id": "1",
+      "username": "johndoe",
+      "email": "johndoe@example.com",
+      "status": "online",
+      "profile_picture": "/images/profile/johndoe.jpg",
+      "last_seen": "2024-12-12T14:30:00Z"
+    },
+    {
+      "user_id": "2",
+      "username": "janedoe",
+      "email": "janedoe@example.com",
+      "status": "offline",
+      "profile_picture": "/images/profile/janedoe.jpg",
+      "last_seen": "2024-12-11T18:45:00Z"
+    }
+  ],
+  
+  "chats": [
+    {
+      "chat_id": "1",
+      "participants": ["1", "2"],
+      "messages": [
+        {
+          "message_id": "101",
+          "sender_id": "1",
+          "timestamp": "2024-12-12T14:00:00Z",
+          "message": "Hello, how are you?",
+          "message_type": "text"
+        },
+        {
+          "message_id": "102",
+          "sender_id": "2",
+          "timestamp": "2024-12-12T14:05:00Z",
+          "message": "I'm good, thanks! How about you?",
+          "message_type": "text"
+        }
+      ],
+      "chat_name": "General Chat",
+      "last_message": {
+        "sender_id": "2",
+        "timestamp": "2024-12-12T14:05:00Z",
+        "message": "I'm good, thanks! How about you?"
+      }
+    },
+    {
+      "chat_id": "2",
+      "participants": ["1"],
+      "messages": [
+        {
+          "message_id": "201",
+          "sender_id": "1",
+          "timestamp": "2024-12-12T14:15:00Z",
+          "message": "Reminder: Meeting at 3 PM today.",
+          "message_type": "text"
+        }
+      ],
+      "chat_name": "Meeting Reminders",
+      "last_message": {
+        "sender_id": "1",
+        "timestamp": "2024-12-12T14:15:00Z",
+        "message": "Reminder: Meeting at 3 PM today."
+      }
+    }
+  ],
+
+  "settings": {
+    "theme": "dark",
+    "notifications_enabled": true,
+    "message_preview_enabled": true,
+    "language": "en"
+  }
+}

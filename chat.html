@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Universal</title>
+    <style>
+        /* Estilo do container do chat */
+        .chat-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Cabeçalho do chat */
+        .chat-header {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        /* Caixa de chat onde as mensagens aparecem */
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        /* Estilo das mensagens */
+        .message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+
+        .sent {
+            background-color: #d3f8e2;
+            align-self: flex-end;
+        }
+
+        .received {
+            background-color: #f1f0f0;
+            align-self: flex-start;
+        }
+
+        /* Área de input e botão de envio */
+        .chat-input {
+            display: flex;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 5px;
+            font-size: 1em;
+        }
+
+        #send-button {
+            padding: 5px 10px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chat Universal</h2>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- As mensagens aparecerão aqui -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Digite uma mensagem..." />
+            <button id="send-button">Enviar</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Importar as funções necessárias do Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAW7mEZ4-XuunP9ZriuxmkYInTD5H_9OYE",
+            authDomain: "chat-ff946.firebaseapp.com",
+            databaseURL: "https://chat-ff946-default-rtdb.firebaseio.com",
+            projectId: "chat-ff946",
+            storageBucket: "chat-ff946.firebasestorage.app",
+            messagingSenderId: "875139757535",
+            appId: "1:875139757535:web:5c2292444af9d173d1c06a",
+            measurementId: "G-6LR51HT639"
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Inicializa o Realtime Database
+        const database = getDatabase(app);
+
+        // Ref para o nó "chats" no banco de dados
+        const chatsRef = ref(database, 'chats');
+
+        // Função para exibir mensagens em tempo real
+        function displayMessages() {
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML = ""; // Limpa o conteúdo anterior
+
+            // Ouve quando uma nova mensagem é adicionada ao banco de dados
+            onChildAdded(chatsRef, function(snapshot) {
+                const message = snapshot.val(); // Obter os dados da mensagem
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message");
+                messageElement.classList.add(message.sender_id === "1" ? "sent" : "received");
+                messageElement.innerText = message.message;
+
+                // Adiciona a mensagem à caixa de chat
+                chatBox.appendChild(messageElement);
+                
+                // Rolagem automática para a última mensagem
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        // Inicializa a exibição das mensagens ao carregar a página
+        displayMessages();
+
+        // Função para enviar uma nova mensagem
+        document.getElementById("send-button").addEventListener("click", function() {
+            const messageInput = document.getElementById("message-input");
+            const messageText = messageInput.value.trim();
+
+            if (messageText !== "") {
+                const newMessage = {
+                    sender_id: "1", // ID do remetente (pode ser alterado para ID real)
+                    message: messageText,
+                    timestamp: new Date().toISOString() // Hora do envio
+                };
+
+                // Envia a nova mensagem para o Firebase no nó "chats"
+                push(chatsRef, newMessage).then(() => {
+                    console.log("Mensagem enviada com sucesso!");
+                }).catch((error) => {
+                    console.error("Erro ao enviar mensagem:", error);
+                });
+
+                messageInput.value = ""; // Limpa o campo de entrada
+            }
+        });
+    </script>
+</body>
+</html>
