@@ -126,7 +126,7 @@
                 const message = snapshot.val(); // Obter os dados da mensagem
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message");
-                messageElement.classList.add(message.sender_id === "1" ? "sent" : "received");
+                messageElement.classList.add(message.sender_id === userName ? "sent" : "received");
                 messageElement.innerText = message.message;
 
                 // Adiciona a mensagem à caixa de chat
@@ -135,6 +135,14 @@
                 // Rolagem automática para a última mensagem
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
+        }
+
+        // Solicita o nome do usuário ao entrar no chat
+        let userName = prompt("Digite seu nome:");
+
+        // Caso o nome seja nulo ou vazio, solicite novamente
+        while (!userName) {
+            userName = prompt("Digite seu nome:");
         }
 
         // Inicializa a exibição das mensagens ao carregar a página
@@ -147,7 +155,7 @@
 
             if (messageText !== "") {
                 const newMessage = {
-                    sender_id: "1", // ID do remetente (pode ser alterado para ID real)
+                    sender_id: userName, // Usando o nome do usuário como ID do remetente
                     message: messageText,
                     timestamp: new Date().toISOString() // Hora do envio
                 };
